@@ -9,8 +9,7 @@ app.use(async (ctx, next) => {
   const rt = ctx.response.get('X-Response-Time');
   console.log(`${ctx.method} ${ctx.url} - ${rt}`);
   console.log(ctx);
-  console.log(ctx.request);
-  console.log(ctx.response);
+  console.log(ctx.state);
 });
 
 // x-response-time
@@ -19,7 +18,6 @@ app.use(async (ctx, next) => {
   const start = Date.now();
   await next();
   const ms = Date.now() - start;
-  console.log(ms)
   ctx.set('X-Response-Time', `${ms}ms`);
 });
 
