@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/GXwar/uranus/issues"
   },
-  "homepage": "https://github.com/GXwar/uranus#readme"
+  "homepage": "https://github.com/GXwar/uranus#readme",
+  "devDependencies": {
+    "koa": "^2.5.2"
+  }
 }
