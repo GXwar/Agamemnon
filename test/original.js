@@ -4,26 +4,27 @@ let app = new Koa();
 
 // logger
 
-app.use(async (ctx, next) => {
-  await next();
-  const rt = ctx.response.get('X-Response-Time');
-  console.log(`${ctx.method} ${ctx.url} - ${rt}`);
-  console.log(ctx);
-  console.log(ctx.state);
-});
+// app.use(async (ctx, next) => {
+//   await next();
+//   const rt = ctx.response.get('X-Response-Time');
+//   console.log(`${ctx.method} ${ctx.url} - ${rt}`);
+//   console.log(ctx);
+//   console.log(ctx.state);
+// });
 
 // x-response-time
 
-app.use(async (ctx, next) => {
-  const start = Date.now();
-  await next();
-  const ms = Date.now() - start;
-  ctx.set('X-Response-Time', `${ms}ms`);
-});
+// app.use(async (ctx, next) => {
+//   const start = Date.now();
+//   await next();
+//   const ms = Date.now() - start;
+//   ctx.set('X-Response-Time', `${ms}ms`);
+// });
 
 // response
 
 app.use(async ctx => {
+  console.log(JSON.stringify(ctx, undefined, 2));
   ctx.body = 'Hello World';
 });
 
