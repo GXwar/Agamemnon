@@ -19,5 +19,8 @@
   "homepage": "https://github.com/GXwar/uranus#readme",
   "devDependencies": {
     "koa": "^2.5.2"
+  },
+  "dependencies": {
+    "only": "0.0.2"
   }
 }
