@@ -1,4 +1,4 @@
-module.exports = {
+const response: object = {
   get body() {
     return this._body;
   },
@@ -14,4 +14,6 @@ module.exports = {
     }
     this.res.statusCode = statusCode;
   }
-}
+};
+
+export default response;

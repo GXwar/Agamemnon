@@ -4,17 +4,17 @@ const createError = require('http-errors');
  * Context Prototype.
  */
 const context = {
-  get query() {
+  get query(): string {
     return this.request.query;
   },
-  get body() {
+  get body(): string {
     return this.response.body;
   },
-  set body(data) {
+  set body(data: string) {
     this.response.body = data;
   },
 
-  get status() {
+  get status(): string {
     return this.response.status;
   },
 
@@ -25,7 +25,7 @@ const context = {
   /**
    * Return JSON Representation.
    */
-  toJSON() {
+  toJSON(): object {
     return {
       request: this.request.toJSON(),
       response: this.response.toJSON(),
@@ -42,10 +42,9 @@ const context = {
    * @param {*} args 
    * @api public
    */
-  throw(...args) {
+  throw(...args: Array<any>): void {
     throw createError(...args)
   },
-
-
 };
 
+export default context;

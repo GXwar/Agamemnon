@@ -1,15 +1,21 @@
-const http = require('http');
-const EventEmitter = require('events');
+import http from 'http';
+import EventEmitter from 'events';
 
-const debug = require('debug')('koa:application');
 const isGeneratorFunction = require('is-generator-function');
 const only = require('only');
+// import isGeneratorFunction from 'is-generator-function';
+// import only from 'only';
 
-let context = require('./context');
-let request = require('./request');
-let response = require('./response');
+import context from './context';
+import request from './request';
+import response from './response';
 
 class Application extends EventEmitter {
+  middlewares: Array<Function>;
+  context: object;
+  request: object;
+  response: object;
+
   constructor() {
     super();
     this.middlewares = [];
@@ -23,7 +29,7 @@ class Application extends EventEmitter {
    *    http.createServer(app.callback()).listen(..args)
    * @param {Mixed} args 
    */
-  listen(...args) {
+  listen(...args: Array<any>) {
     const server = http.createServer(this.callback());
     return server.listen(...args);
   }
@@ -51,10 +57,9 @@ class Application extends EventEmitter {
    * @param {function} fn 
    * @return {Application} self
    */
-  use(fn) {
+  use(fn: Function) {
     if (typeof(fn) !== 'function') throw new TypeError('middleware must be a function');
     if (isGeneratorFunction(fn)) throw new TypeError('middleware could not be a generator function');
-    debug('use %s', fn._name || fn.name || '-');
     this.middlewares.push(fn);
     return this;
   }
@@ -65,8 +70,8 @@ class Application extends EventEmitter {
    * @api private
    */
   compose() {
-    return async ctx => {
-      function createNext(middleware, oldNext) {
+    return async (ctx: any) => {
+      function createNext(middleware: any, oldNext: any) {
         return async () => {
           await middleware(ctx, oldNext);
         }
@@ -85,9 +90,9 @@ class Application extends EventEmitter {
     }
   }
 
-  handleRequest(ctx, fnMiddleware) {
+  handleRequest(ctx: any, fnMiddleware: any) {
     const respond = () => this.responseBody(ctx);
-    const onerror = (err) => this.onerror(err);
+    const onerror = (err: any) => this.onerror(err, ctx);
     return fnMiddleware(ctx).then(respond).catch(onerror);
   }
 
@@ -97,7 +102,7 @@ class Application extends EventEmitter {
   callback() {
     // req & res is node's request and response objects
     const fn = this.compose();
-    const handleRequest = (req, res) => {
+    const handleRequest = (req: any, res: any) => {
       const ctx = this.createContext(req, res);
       return this.handleRequest(ctx, fn);
     }
@@ -111,7 +116,7 @@ class Application extends EventEmitter {
    * 
    * @api private
    */
-  createContext(req, res) {
+  createContext(req: any, res: any) {
     const context = Object.create(this.context);
     const request = context.request = Object.create(this.request);
     const response = context.response = Object.create(this.response);
@@ -130,7 +135,7 @@ class Application extends EventEmitter {
    * Response to client
    * @param {object} ctx 
    */
-  responseBody(ctx) {
+  responseBody(ctx: any) {
     let content = ctx.body;
     if (typeof content === 'string') {
       ctx.res.end(content);
@@ -142,10 +147,10 @@ class Application extends EventEmitter {
 
   /**
    * Default error handler
-   * @param {*} err 
-   * @param {*} ctx 
+   * 
+   * @private
    */
-  onerror(err, ctx) {
+  onerror(err: any, ctx: any): void {
     if (err.code === 'ENOENT') {
       ctx.status = 404;
     } else {
@@ -157,4 +162,4 @@ class Application extends EventEmitter {
   }
 }
 
-module.exports = Application;
+export default Application;
