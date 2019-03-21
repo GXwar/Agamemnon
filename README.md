@@ -1,2 +1,3 @@
 # uranus
-Uranus is  web framework fo node.js
+
+Uranus is a web framework for node.js implemented by Typescript.
