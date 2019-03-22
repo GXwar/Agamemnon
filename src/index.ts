@@ -5,6 +5,11 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse): vo
   res.end('hello, world');
 });
 
-server.listen(3000, () => {
-  console.log('server created');
-});
+
+if (require.main === module) {
+  server.listen(3000, () => {
+    console.log('server created');
+  });
+}
+
+export default server;
