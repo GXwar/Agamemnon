@@ -1,0 +1,29 @@
+{
+  "name": "uranus",
+  "version": "1.0.0",
+  "description": "Uranus is a web framework for node.js implemented by Typescript.",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GXwar/uranus.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GXwar/uranus/issues"
+  },
+  "homepage": "https://github.com/GXwar/uranus#readme",
+  "devDependencies": {
+    "@types/node": "^11.11.6",
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.3.4000",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
+    "webpack-node-externals": "^1.7.2"
+  }
+}
