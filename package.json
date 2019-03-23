@@ -2,16 +2,20 @@
   "name": "agamemnon",
   "version": "0.0.1",
   "description": "Agamemnon is a web framework for node.js implemented by Typescript.",
-  "main": "lib/application.ts",
+  "main": "dist/Application.js",
   "scripts": {
     "test": "jest",
     "lint": "eslint lib test",
+    "build": "tsc",
     "authors": "git log --format='%aN <%aE>' | sort -u > AUTHORS"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/GXwar/Agamemnon.git"
   },
+  "files": [
+    "lib"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
