@@ -1,6 +1,6 @@
 # Agamemnon
-[![Build Status](https://travis-ci.org/GXwar/Agamemnon.svg?branch=master)](https://travis-ci.org/GXwar/Agamemnon)
-![](https://img.shields.io/badge/language-swift-orange.svg)
+![Build Status](https://travis-ci.org/GXwar/Agamemnon.svg?branch=master)
+![Node Version](https://img.shields.io/badge/npm-%3E%3D7.6.0-blue.svg)
 
 **This project is inspired by [koa.js](<https://github.com/koajs/koa>), and it can just be used for study purpose, not for business.**
 
