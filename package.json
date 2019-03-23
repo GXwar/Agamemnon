@@ -1,9 +1,12 @@
 {
   "name": "agamemnon",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "Agamemnon is a web framework for node.js implemented by Typescript.",
   "main": "lib/Application.js",
   "types": "lib/Application.d.ts",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "test": "jest",
     "lint": "eslint lib test",

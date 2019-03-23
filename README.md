@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/GXwar/Agamemnon.svg?branch=master)](https://travis-ci.org/GXwar/Agamemnon)
 # Agamemnon
 
 **This project is inspired by [koa.js](<https://github.com/koajs/koa>), and it can just be used for study purpose, not for business.**
