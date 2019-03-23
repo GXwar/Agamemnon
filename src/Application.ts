@@ -9,15 +9,22 @@ import {
 import Context from './Context';
 import Request from './Request';
 import Response from './Response';
-
-type asyncContextFn = (ctx: Context) => Promise<void>;
+import {
+  Middleware,
+  ComposedMiddleware,
+  createNext
+} from './Utils';
 
 class Application {
   // Attributes
-  callbackFunc: asyncContextFn | undefined;
+  middlewares: Array<Middleware>;
   context: Context | undefined;
   request: Request | undefined;
   response: Response | undefined;
+
+  constructor() {
+    this.middlewares = [];
+  }
 
   listen(...args: Array<any>): Server {
     const composedFn: RequestListener = this.callback();
@@ -28,18 +35,35 @@ class Application {
   /**
    * Mount callback function
    */
-  use(fn: asyncContextFn): void {
-    this.callbackFunc = fn;
+  use(middleware: Middleware): void {
+    this.middlewares.push(middleware);
   }
 
+  /**
+   * Compose all middlewares to one middleware
+   */
+  compose(): ComposedMiddleware {
+    return async ctx => {
+      let next = async () => Promise.resolve();
+      const len: number = this.middlewares.length;
+      for (let i = len - 1; i >= 0; i--) {
+        const currendMiddleware = this.middlewares[i];
+        next = createNext(ctx, currendMiddleware, next);
+      }
+      await next();
+    }
+  }
+
+  /**
+   * Callback function for createServer
+   */
   callback(): RequestListener {
     return (req: IncomingMessage, res: ServerResponse) => {
       const ctx = this.createContext(req, res);
-      if (this.callbackFunc) {
-        this.callbackFunc(ctx).then(() => {
-          this.responseBody(ctx);
-        });
-      }
+      const fn = this.compose();
+      fn(ctx).then(() => {
+        this.responseBody(ctx);
+      });
     }
   }
 

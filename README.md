@@ -1,6 +1,6 @@
 # Uranus
 
-**This project is inspired by [koa.js](<https://github.com/koajs/koa>), and it is just used as study, not for business. **
+**This project is inspired by [koa.js](<https://github.com/koajs/koa>), and it can just be used for study purpose, not for business.**
 
 Uranus is an expressive HTTP middleware framework for node.js to make web applications and APIs more enjoyable to write. Uranus's middleware stack flows in a stack-like manner, allowing you to perform actions downstream then filter and manipulate the response upstream.
 
