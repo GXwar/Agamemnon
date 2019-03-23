@@ -1,15 +1,11 @@
-import http, { IncomingMessage, ServerResponse } from 'http';
+import uranus from './Application';
 
-const server = http.createServer((req: IncomingMessage, res: ServerResponse): void => {
-  res.writeHead(200);
-  res.end('hello, world');
+const app = new uranus();
+app.use(async ctx => {
+  console.log(ctx);
+  ctx.body = 'hello' + ctx.query.name;
 });
 
-
-if (require.main === module) {
-  server.listen(3000, () => {
-    console.log('server created');
-  });
-}
-
-export default server;
+app.listen(3000, () => {
+  console.log('listening on 3000');
+});

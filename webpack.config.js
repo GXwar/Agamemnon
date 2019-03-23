@@ -18,7 +18,8 @@ module.exports = {
         test: /\.ts$/,
         loader: 'ts-loader',
         exclude: [
-          path.resolve(curRoot, 'node_modules')
+          path.resolve(curRoot, 'node_modules'),
+          path.resolve(curRoot, 'tests')
         ]
       }
     ]
