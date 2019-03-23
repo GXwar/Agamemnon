@@ -1,30 +1,30 @@
-# Uranus
+# Agamemnon
 
 **This project is inspired by [koa.js](<https://github.com/koajs/koa>), and it can just be used for study purpose, not for business.**
 
-Uranus is an expressive HTTP middleware framework for node.js to make web applications and APIs more enjoyable to write. Uranus's middleware stack flows in a stack-like manner, allowing you to perform actions downstream then filter and manipulate the response upstream.
+Agamemnon is an expressive HTTP middleware framework for node.js to make web applications and APIs more enjoyable to write. Agamemnon's middleware stack flows in a stack-like manner, allowing you to perform actions downstream then filter and manipulate the response upstream.
 
 Only methods that are common to nearly all HTTP servers are integrated directly into Koa's small ~570 SLOC codebase. This includes things like content negotiation, normalization of node inconsistencies, redirection, and a few others.
 
-Uranus is not bundled with any middleware.
+Agamemnon is not bundled with any middleware.
 
 ## Installation
 
 Koa requires **node v7.6.0** or higher for ES2015 and async function support.
 
 ```
-$ npm install uranus
+$ npm install agamenon
 ```
 
-## Say Hello to Uranus
+## Say Hello to Agamemnon
 
 ```typescript
-import uranus from 'uranus';
-const app = new uranus();
+import agamenon from 'agamenon';
+const app = new agamenon();
 
 // response
 app.use(async ctx => {
-  ctx.body = 'Hello Uranus';
+  ctx.body = 'Hello Agamemnon';
 });
 
 app.listen(3000);
@@ -32,7 +32,7 @@ app.listen(3000);
 
 ## Middleware
 
-Uranus is a middleware framework that can take two different kinds of functions as middleware:
+Agamemnon is a middleware framework that can take two different kinds of functions as middleware:
 
 * async function
 * Common function
