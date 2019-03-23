@@ -1,7 +1,7 @@
 {
-  "name": "uranus",
+  "name": "agamemnon",
   "version": "0.0.1",
-  "description": "Uranus is a web framework for node.js implemented by Typescript.",
+  "description": "Agamemnon is a web framework for node.js implemented by Typescript.",
   "main": "lib/application.ts",
   "scripts": {
     "test": "jest",
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GXwar/uranus.git"
+    "url": "git+https://github.com/GXwar/Agamemnon.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/GXwar/uranus/issues"
+    "url": "https://github.com/GXwar/Agamemnon/issues"
   },
-  "homepage": "https://github.com/GXwar/uranus#readme",
+  "homepage": "https://github.com/GXwar/Agamemnon#readme",
   "devDependencies": {
     "@types/jest": "^24.0.11",
     "@types/node": "^11.11.6",
