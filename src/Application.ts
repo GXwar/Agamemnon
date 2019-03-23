@@ -1,3 +1,4 @@
+import { EventEmitter } from 'events';
 import http from 'http';
 import { 
   IncomingMessage, 
@@ -12,20 +13,23 @@ import Response from './Response';
 import {
   Middleware,
   ComposedMiddleware,
-  createNext
+  createNext,
+  ErrnoException
 } from './Utils';
 
-class Application {
+class Application extends EventEmitter {
   // Attributes
-  middlewares: Array<Middleware>;
-  context: Context | undefined;
-  request: Request | undefined;
-  response: Response | undefined;
+  private middlewares: Array<Middleware>;
 
   constructor() {
+    super();
     this.middlewares = [];
   }
 
+  /******************** user functions ********************/
+  /**
+   * Start http server, and get callback function
+   */
   listen(...args: Array<any>): Server {
     const composedFn: RequestListener = this.callback();
     const server: Server = http.createServer(composedFn);
@@ -39,10 +43,36 @@ class Application {
     this.middlewares.push(middleware);
   }
 
+  /******************** internal functions ********************/
+  /**
+   * Get callback function for http server
+   */
+  private callback(): RequestListener {
+    return (req: IncomingMessage, res: ServerResponse) => {
+      const ctx = this.createContext(req, res);
+      const fn = this.compose();
+      fn(ctx).then(() => {
+        this.responseBody(ctx);
+      }).catch((err) => {
+        this.onerror(err, ctx);
+      });
+    }
+  }
+
+  /**
+   * Build context object
+   */
+  private createContext(req: IncomingMessage, res: ServerResponse): Context {
+    const request = new Request(req);
+    const response = new Response(res);
+    const ctx = new Context(request, response);
+    return ctx;
+  }
+
   /**
    * Compose all middlewares to one middleware
    */
-  compose(): ComposedMiddleware {
+  private compose(): ComposedMiddleware {
     return async ctx => {
       let next = async () => Promise.resolve();
       const len: number = this.middlewares.length;
@@ -55,35 +85,29 @@ class Application {
   }
 
   /**
-   * Callback function for createServer
+   * Response to client
    */
-  callback(): RequestListener {
-    return (req: IncomingMessage, res: ServerResponse) => {
-      const ctx = this.createContext(req, res);
-      const fn = this.compose();
-      fn(ctx).then(() => {
-        this.responseBody(ctx);
-      });
-    }
-  }
-
-  /**
-   * Build context object
-   */
-  createContext(req: IncomingMessage, res: ServerResponse): Context {
-    const request = new Request(req);
-    const response = new Response(res);
-    const ctx = new Context(request, response);
-    return ctx;
-  }
-
-  responseBody(ctx: Context) {
+  private responseBody(ctx: Context) {
     const content = ctx.body;
     if (ctx.res && typeof content === 'string') {
       ctx.res.end(content);
     } else if (ctx.res && typeof content === 'object') {
       ctx.res.end(JSON.stringify(content));
     }
+  }
+
+  /**
+   * Error Handle
+   */
+  onerror(err: ErrnoException, ctx: Context) {
+    if (err.code === 'ENOENT') {
+      ctx.status = 404;
+    } else {
+      ctx.status = 500;
+    }
+    const msg = err.message || 'Internal Error';
+    ctx.res.end(msg);
+    this.emit('error', err);
   }
 }
 

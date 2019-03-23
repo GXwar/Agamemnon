@@ -6,6 +6,14 @@ import Context from './Context';
 export type Middleware = (context: Context, next: () => Promise<any>) => any;
 export type ComposedMiddleware = (context: Context, next?: () => Promise<any>) => Promise<void>;
 
+export interface ErrnoException extends Error {
+  errno?: number;
+  code?: string;
+  path?: string;
+  syscall?: string;
+  stack?: string;
+}
+
 /**
  * Compose middleware with oldNext
  * @param ctx current context
