@@ -1,6 +1,6 @@
 {
   "name": "agamemnon",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Agamemnon is a web framework for node.js implemented by Typescript.",
   "main": "dist/Application.js",
   "scripts": {
