@@ -3,10 +3,10 @@ import {
   ServerResponse
 } from 'http';
 
-import Request from './Request';
-import Response from './Response';
+import { Request } from './Request';
+import { Response } from './Response';
 
-class Context {
+export class Context {
   request: Request;
   response: Response;
   req: IncomingMessage;
@@ -40,5 +40,3 @@ class Context {
       this.response.status = statusCode;
   }
 }
-
-export default Context;

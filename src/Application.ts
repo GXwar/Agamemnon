@@ -7,9 +7,9 @@ import {
   RequestListener
 } from 'http';
 
-import Context from './Context';
-import Request from './Request';
-import Response from './Response';
+import { Context } from './Context';
+import { Request } from './Request';
+import { Response } from './Response';
 import {
   Middleware,
   ComposedMiddleware,

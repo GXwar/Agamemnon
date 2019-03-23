@@ -1,7 +1,7 @@
 import { IncomingMessage } from 'http';
 import url from 'url';
 
-class Request {
+export class Request {
   req: IncomingMessage;
   constructor(req: IncomingMessage) {
     this.req = req;
@@ -11,5 +11,3 @@ class Request {
     return url.parse(this.req.url as string, true).query;
   }
 }
-
-export default Request;

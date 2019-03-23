@@ -1,4 +1,4 @@
-import Context from './Context';
+import { Context } from './Context';
 
 /**
  * The type definition of middleware function

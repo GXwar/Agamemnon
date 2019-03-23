@@ -1,6 +1,6 @@
 import { ServerResponse } from 'http';
 
-class Response {
+export class Response {
   res: ServerResponse;
   private _body: string | undefined;
 
@@ -28,5 +28,3 @@ class Response {
     this.res.statusCode = statusCode;
   }
 }
-
-export default Response;

@@ -1,24 +1,29 @@
 {
   "name": "agamemnon",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Agamemnon is a web framework for node.js implemented by Typescript.",
-  "main": "lib/cmjs/Application.js",
-  "module": "./lib/es6/Application.js",
+  "main": "src/index.ts",
   "scripts": {
     "test": "jest",
     "lint": "eslint lib test",
     "build:cmjs": "tsc -P tsconfig.json",
     "build:es6": "tsc -P tsconfig.json --module ES6 --outDir lib/es6",
     "build": "npm run build:cmjs; npm run build:es6",
+    "rebuild": "npm run clean && npm run build",
+    "clean": "rm -rf lib",
     "authors": "git log --format='%aN <%aE>' | sort -u > AUTHORS"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/GXwar/Agamemnon.git"
   },
-  "keywords": [],
+  "keywords": [
+    "node",
+    "web",
+    "framework"
+  ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/GXwar/Agamemnon/issues"
   },
@@ -35,5 +40,8 @@
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0",
     "webpack-node-externals": "^1.7.2"
+  },
+  "engines": {
+    "node": ">=8.0.0"
   }
 }
