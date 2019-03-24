@@ -1,11 +1,9 @@
-import Agamemnon from './src/Application';
+import Agamemnon from './src/application';
 
 const app = new Agamemnon();
-app.context.msg = 'world';
-app.use(async (ctx, next) => {
-  ctx.res.end('hello' + ctx.msg);
-});
 
-app.listen(3000, () => {
+app.use(async ctx => {
 
 });
+
+app.listen(3000);

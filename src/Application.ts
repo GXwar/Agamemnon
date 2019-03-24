@@ -7,25 +7,30 @@ import {
   RequestListener
 } from 'http';
 
-import { Context } from './Context';
-import { Request } from './Request';
-import { Response } from './Response';
+import { context, IContext } from './context';
+import { request, IRequest } from './request';
+import { response, IResponse } from './response';
 import {
   Middleware,
   ComposedMiddleware,
   createNext,
   ErrnoException
-} from './Utils';
+} from './utils';
 
 class Application extends EventEmitter {
   // Attributes
   private middlewares: Array<Middleware>;
-  context: Context;
+  context: IContext;
+  request: IRequest;
+  response: IResponse;
+  server?: Server;
 
   constructor() {
     super();
     this.middlewares = [];
-    this.context = Context.prototype;
+    this.context = Object.create(context);
+    this.request = Object.create(request);
+    this.response = Object.create(response);
   }
 
   /******************** user functions ********************/
@@ -35,6 +40,7 @@ class Application extends EventEmitter {
   listen(...args: Array<any>): Server {
     const composedFn: RequestListener = this.callback();
     const server: Server = http.createServer(composedFn);
+    this.server = server;
     return server.listen(...args);
   }
 
@@ -52,6 +58,7 @@ class Application extends EventEmitter {
   private callback(): RequestListener {
     return (req: IncomingMessage, res: ServerResponse) => {
       const ctx = this.createContext(req, res);
+      this.context = ctx;
       const fn = this.compose();
       fn(ctx).then(() => {
         this.responseBody(ctx);
@@ -64,10 +71,12 @@ class Application extends EventEmitter {
   /**
    * Build context object
    */
-  private createContext(req: IncomingMessage, res: ServerResponse): Context {
-    const request = new Request(req);
-    const response = new Response(res);
-    const ctx = new Context(request, response);
+  private createContext(req: IncomingMessage, res: ServerResponse): IContext {
+    const ctx = Object.create(this.context);
+    ctx.request = Object.create(this.request);
+    ctx.response = Object.create(this.response);
+    ctx.req = ctx.request.req = req;
+    ctx.res = ctx.response.res = res;
     return ctx;
   }
 
@@ -89,7 +98,7 @@ class Application extends EventEmitter {
   /**
    * Response to client
    */
-  private responseBody(ctx: Context) {
+  private responseBody(ctx: IContext) {
     const content = ctx.body;
     if (ctx.res && typeof content === 'string') {
       ctx.res.end(content);
@@ -101,14 +110,14 @@ class Application extends EventEmitter {
   /**
    * Error Handle
    */
-  onerror(err: ErrnoException, ctx: Context) {
+  onerror(err: ErrnoException, ctx: IContext) {
     if (err.code === 'ENOENT') {
       ctx.status = 404;
     } else {
       ctx.status = 500;
     }
     const msg = err.message || 'Internal Error';
-    ctx.res.end(msg);
+    if (ctx.res) ctx.res.end(msg);
     this.emit('error', err);
   }
 }

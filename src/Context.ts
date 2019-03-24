@@ -2,42 +2,44 @@ import {
   IncomingMessage,
   ServerResponse
 } from 'http';
+import { ParsedUrlQuery } from 'querystring';
 
-import { Request } from './Request';
-import { Response } from './Response';
+import { request, IRequest } from './request';
+import { response, IResponse } from './response';
+import { Socket } from 'dgram';
 
-export class Context {
-  request: Request;
-  response: Response;
-  req: IncomingMessage;
-  res: ServerResponse;
+export interface IContext {
+  request: IRequest;
+  response: IResponse;
+  req: any;
+  res: any;
+  query: string | ParsedUrlQuery;
+  body: string;
+  status: number;
   [key: string]: any;
+}
 
-  constructor(request: Request, response: Response) {
-    this.request = request;
-    this.response = response;
-    this.req = request.req;
-    this.res = response.res;
-  }
-
+export const context: IContext = {
+  request: request,
+  response: response,
+  req: undefined,
+  res: undefined,
   get query() {
-    console.log(this.request.query);
-    return this.request.query;
-  }
-
+    if (this.request) return this.request.query;
+    else return '';
+  },
   get body() {
-      return this.response.body;
-  }
-
-  set body(data) {
-      this.response.body = data;
-  }
-
+    if (this.response) return this.response.body;
+    else return '';
+  },
+  set body(data: string) {
+    if (this.response) this.response.body = data;
+  },
   get status() {
-      return this.response.status;
-  }
-
-  set status(statusCode) {
-      this.response.status = statusCode;
+    if (this.response) return this.response.status;
+    else return -1;
+  },
+  set status(statusCode: number) {
+    if (this.response) this.response.status = statusCode;
   }
 }
