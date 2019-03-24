@@ -20,10 +20,12 @@ import {
 class Application extends EventEmitter {
   // Attributes
   private middlewares: Array<Middleware>;
+  context: Context;
 
   constructor() {
     super();
     this.middlewares = [];
+    this.context = Context.prototype;
   }
 
   /******************** user functions ********************/

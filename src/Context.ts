@@ -11,6 +11,7 @@ export class Context {
   response: Response;
   req: IncomingMessage;
   res: ServerResponse;
+  [key: string]: any;
 
   constructor(request: Request, response: Response) {
     this.request = request;
